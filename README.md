@@ -29,7 +29,7 @@ Editar el secreto `OBS_CLAVE` y correr de nuevo el workflow "Publicar sitio".
 ## Logos
 
 Subir `assets/logo1.png` y `assets/logo2.png`; aparecen solos en la pantalla de entrada.
-`assets/banner.jpg` (1920 × 400) sale arriba de la entrada y arriba del tablero.
+`assets/logo-msp.png` es el logo de la franja de arriba (recortado del banner `assets/banner.jpg`).
 `assets/fondo.jpg` es la foto de fondo de la entrada (Basílica de los Ángeles).
 
 ## Privacidad
