@@ -17,7 +17,9 @@
     background: radial-gradient(1200px 600px at 50% -10%, var(--fondo2), var(--fondo)); }
   body.login { display: flex; flex-direction: column; min-height: 100%; }
   .banner { display: block; width: 100%; height: auto; min-height: 120px; max-height: 400px; object-fit: cover; object-position: center; }
-  #entrada { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+  #entrada { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 16px;
+    background: linear-gradient(rgba(11,29,58,.35), rgba(11,29,58,.7)), url(assets/fondo.jpg) center 40% / cover no-repeat; }
+  @media (min-width: 900px) { #entrada { justify-content: flex-end; padding-right: 7vw; } }
   .tarjeta { width: 100%; max-width: 400px; background: var(--tarjeta); border-radius: 14px; padding: 32px 28px 26px;
     box-shadow: 0 20px 50px rgba(0,0,0,.35); text-align: center; }
   .escudo { width: 56px; height: 56px; margin: 0 auto 14px; display: block; }
