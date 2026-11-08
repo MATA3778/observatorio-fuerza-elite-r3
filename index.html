@@ -132,6 +132,17 @@
     } catch (e) { throw new Error('clave'); }
   }
 
+  // Homicidios y heridos del OIJ (datos abiertos): se agregan al tablero antes de mostrarlo.
+  async function leerHechos() {
+    try { var r = await fetch('datos/hechos.json', { cache: 'no-store' }); if (r.ok) return await r.text(); } catch (e) {}
+    return '[]';
+  }
+  function conHechos(html, json) {
+    var tag = '<script type="application/json" id="data-hechos">' + json.replace(/<\//g, '<\\/') + '<\/script>';
+    var i = html.indexOf('<head>');
+    return i >= 0 ? html.slice(0, i + 6) + tag + html.slice(i + 6) : tag + html;
+  }
+
   async function cargarTablero() {
     $('marco').hidden = true;
     $('cargando').style.display = 'flex';
@@ -140,7 +151,7 @@
       var r = await fetch(cfg.url + '?formato=html&llave=' + encodeURIComponent(cfg.llave), { cache: 'no-store', credentials: 'omit' });
       var html = await r.text();
       if (!r.ok || html.indexOf('id="data-cortes"') < 0) throw new Error(html.indexOf('Acceso restringido') >= 0 ? 'llave' : 'red');
-      $('marco').srcdoc = html;
+      $('marco').srcdoc = conHechos(html, await leerHechos());
       $('marco').hidden = false;
       $('cargando').style.display = 'none';
     } catch (e) {
