@@ -32,6 +32,10 @@ Subir `assets/logo1.png` y `assets/logo2.png`; aparecen solos en la pantalla de 
 `assets/logo-msp.png` es el logo de la franja de arriba (recortado del banner `assets/banner.jpg`).
 `assets/fondo.jpg` es la foto de fondo de la entrada (Basílica de los Ángeles).
 
+## Homicidios y heridos (OIJ)
+
+`datos/hechos.json` sale de Estadísticas Policiales del OIJ (datos abiertos): homicidios, lesiones y agresiones en Cartago, solo fecha, franja, cantón y tipo. Para actualizarlo: descargar el CSV y correr `python3 scripts/oij.py Estadisticas.csv`. El sitio lo agrega al tablero al abrirlo.
+
 ## Privacidad
 
 Aquí no van datos, nombres, cédulas ni la contraseña. Solo el código de la página.
