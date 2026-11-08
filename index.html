@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Observatorio Fuerza Élite R3</title>
+<style>
+  :root {
+    --fondo: #0b1d3a; --fondo2: #10294f; --tarjeta: #ffffff; --texto: #13233f; --suave: #5b6b85;
+    --azul: #1f5fbf; --azul2: #174a96; --borde: #d6dce6; --error: #b42318; --barra: #0b1d3a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: var(--texto);
+    background: radial-gradient(1200px 600px at 50% -10%, var(--fondo2), var(--fondo)); }
+  #entrada { min-height: 100%; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+  .tarjeta { width: 100%; max-width: 400px; background: var(--tarjeta); border-radius: 14px; padding: 32px 28px 26px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.35); text-align: center; }
+  .escudo { width: 56px; height: 56px; margin: 0 auto 14px; display: block; }
+  .logos { display: flex; justify-content: center; gap: 14px; margin-bottom: 14px; }
+  .logos img { height: 56px; width: auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; letter-spacing: .2px; }
+  .sub { color: var(--suave); font-size: 14px; margin: 0 0 22px; }
+  label { display: block; text-align: left; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .campo { position: relative; }
+  input[type=password], input[type=text] { width: 100%; font-size: 16px; padding: 12px 44px 12px 12px; border: 1px solid var(--borde);
+    border-radius: 8px; outline: none; }
+  input:focus { border-color: var(--azul); box-shadow: 0 0 0 3px rgba(31,95,191,.18); }
+  .ver { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; background: none; cursor: pointer;
+    color: var(--suave); font-size: 13px; padding: 6px; }
+  button.entrar { width: 100%; margin-top: 14px; padding: 12px; font-size: 16px; font-weight: 600; color: #fff;
+    background: var(--azul); border: 0; border-radius: 8px; cursor: pointer; }
+  button.entrar:hover { background: var(--azul2); }
+  button.entrar:disabled { opacity: .7; cursor: wait; }
+  .msg { min-height: 20px; margin-top: 12px; font-size: 14px; }
+  .msg.error { color: var(--error); }
+  .pie { margin-top: 18px; font-size: 12px; color: var(--suave); }
+  #app { display: none; height: 100%; flex-direction: column; }
+  #app.on { display: flex; }
+  .barra { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--barra); color: #fff; font-size: 14px; }
+  .barra b { flex: 1; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .barra button { background: rgba(255,255,255,.12); color: #fff; border: 0; border-radius: 6px; padding: 6px 10px;
+    font-size: 13px; cursor: pointer; }
+  .barra button:hover { background: rgba(255,255,255,.22); }
+  #marco { flex: 1; width: 100%; border: 0; background: #fff; }
+  #cargando { flex: 1; display: none; align-items: center; justify-content: center; background: #f4f6fa; color: var(--suave); }
+</style>
+</head>
+<body>
+<main id="entrada">
+  <form class="tarjeta" id="form" autocomplete="off">
+    <div class="logos" id="logos" hidden></div>
+    <svg class="escudo" id="escudo" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M32 4 8 13v17c0 15 10.5 25.5 24 30 13.5-4.5 24-15 24-30V13L32 4z" fill="#0b1d3a"/>
+      <path d="M32 9 13 16.2V30c0 12 8.2 20.6 19 24.6C42.8 50.6 51 42 51 30V16.2L32 9z" fill="#1f5fbf"/>
+      <rect x="24" y="29" width="16" height="13" rx="2" fill="#fff"/>
+      <path d="M27 29v-4a5 5 0 0 1 10 0v4" fill="none" stroke="#fff" stroke-width="3"/>
+    </svg>
+    <h1>Observatorio Fuerza Élite R3</h1>
+    <p class="sub">Región 3 · Cartago · Acceso restringido</p>
+    <label for="clave">Contraseña</label>
+    <div class="campo">
+      <input type="password" id="clave" required autofocus autocomplete="current-password">
+      <button type="button" class="ver" id="ver">Ver</button>
+    </div>
+    <button class="entrar" id="entrar" type="submit">Entrar</button>
+    <div class="msg" id="msg" role="status"></div>
+    <div class="pie">Uso interno. No compartir.</div>
+  </form>
+</main>
+
+<div id="app">
+  <div class="barra">
+    <b>Observatorio Fuerza Élite R3</b>
+    <button type="button" id="recargar">Actualizar</button>
+    <button type="button" id="salir">Salir</button>
+  </div>
+  <div id="cargando">Cargando datos…</div>
+  <iframe id="marco" title="Tablero" hidden></iframe>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var CLAVE_SESION = 'obs_cfg';
+  var $ = function (id) { return document.getElementById(id); };
+  var cfg = null;
+
+  function deB64(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
+  function aviso(t, error) { $('msg').textContent = t || ''; $('msg').className = 'msg' + (error ? ' error' : ''); }
+
+  async function descifrar(clave) {
+    var r = await fetch('config.enc.json', { cache: 'no-store' });
+    if (!r.ok) throw new Error('sin-config');
+    var c = await r.json();
+    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(clave), 'PBKDF2', false, ['deriveKey']);
+    var k = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: deB64(c.sal), iterations: c.it, hash: 'SHA-256' },
+      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    try {
+      var p = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: deB64(c.iv) }, k, deB64(c.ct));
+      return JSON.parse(new TextDecoder().decode(p));
+    } catch (e) { throw new Error('clave'); }
+  }
+
+  async function cargarTablero() {
+    $('marco').hidden = true;
+    $('cargando').style.display = 'flex';
+    $('cargando').textContent = 'Cargando datos…';
+    try {
+      var r = await fetch(cfg.url + '?formato=html&llave=' + encodeURIComponent(cfg.llave), { cache: 'no-store', credentials: 'omit' });
+      var html = await r.text();
+      if (!r.ok || html.indexOf('id="data-cortes"') < 0) throw new Error(html.indexOf('Acceso restringido') >= 0 ? 'llave' : 'red');
+      $('marco').srcdoc = html;
+      $('marco').hidden = false;
+      $('cargando').style.display = 'none';
+    } catch (e) {
+      $('cargando').textContent = e.message === 'llave'
+        ? 'El tablero no aceptó la llave de acceso. Hay que revisar la configuración.'
+        : 'No se pudo cargar el tablero. Revise la conexión y toque "Actualizar".';
+    }
+  }
+
+  function abrir() {
+    $('entrada').style.display = 'none';
+    $('app').classList.add('on');
+    cargarTablero();
+  }
+
+  $('form').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    $('entrar').disabled = true;
+    aviso('Verificando…');
+    try {
+      cfg = await descifrar($('clave').value);
+      try { sessionStorage.setItem(CLAVE_SESION, JSON.stringify(cfg)); } catch (e) {}
+      $('clave').value = '';
+      aviso('');
+      abrir();
+    } catch (e) {
+      aviso(e.message === 'clave' ? 'Contraseña incorrecta.' : 'El sitio todavía no está configurado.', true);
+      $('clave').select();
+    } finally {
+      $('entrar').disabled = false;
+    }
+  });
+
+  $('ver').addEventListener('click', function () {
+    var i = $('clave'); var oculto = i.type === 'password';
+    i.type = oculto ? 'text' : 'password'; this.textContent = oculto ? 'Ocultar' : 'Ver'; i.focus();
+  });
+  $('recargar').addEventListener('click', cargarTablero);
+  $('salir').addEventListener('click', function () {
+    try { sessionStorage.removeItem(CLAVE_SESION); } catch (e) {}
+    cfg = null; $('marco').srcdoc = ''; location.reload();
+  });
+
+  // Logos opcionales: si existen assets/logo1.png y assets/logo2.png se muestran arriba.
+  ['assets/logo1.png', 'assets/logo2.png'].forEach(function (src) {
+    var img = new Image();
+    img.onload = function () { $('logos').appendChild(img); $('logos').hidden = false; $('escudo').style.display = 'none'; };
+    img.alt = ''; img.src = src;
+  });
+
+  try { cfg = JSON.parse(sessionStorage.getItem(CLAVE_SESION) || 'null'); } catch (e) { cfg = null; }
+  if (cfg && cfg.url && cfg.llave) abrir();
+})();
+</script>
+</body>
+</html>
