@@ -16,22 +16,22 @@
   body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: var(--texto);
     background: radial-gradient(1200px 600px at 50% -10%, var(--fondo2), var(--fondo)); }
   body { display: flex; flex-direction: column; min-height: 100%; }
-  .cab { display: flex; align-items: center; gap: 16px; padding: 10px max(16px, 4vw); background: #1b3350; color: #fff;
+  .cab { display: flex; align-items: center; gap: 16px; padding: 14px max(16px, 4vw); background: #1b3350; color: #fff;
     border-bottom: 2px solid #c9a227; }
-  .marca { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .marca img { height: 40px; width: auto; display: block; }
-  .msp { font-weight: 700; font-size: 12.5px; line-height: 1.15; letter-spacing: .6px; text-transform: uppercase; }
-  .sep { width: 1px; height: 30px; background: rgba(255,255,255,.55); margin: 0 4px; }
-  .gob { font-weight: 500; font-size: 10.5px; line-height: 1.25; letter-spacing: .8px; text-transform: uppercase; opacity: .9; }
+  .marca { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+  .marca img { height: 60px; width: auto; display: block; }
+  .msp { font-weight: 700; font-size: 18px; line-height: 1.15; letter-spacing: .6px; text-transform: uppercase; }
+  .sep { width: 1px; height: 44px; background: rgba(255,255,255,.55); margin: 0 4px; }
+  .gob { font-weight: 500; font-size: 14px; line-height: 1.25; letter-spacing: .8px; text-transform: uppercase; opacity: .9; }
   .cab-der { margin-left: auto; display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .nombre { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nombre { font-weight: 600; font-size: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .acciones { display: flex; gap: 8px; }
   .acciones[hidden] { display: none; }
   .acciones button { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.6); border-radius: 3px;
-    padding: 5px 10px; font-size: 13px; cursor: pointer; }
+    padding: 7px 14px; font-size: 14px; cursor: pointer; }
   .acciones button:hover { background: rgba(255,255,255,.14); }
-  @media (max-width: 760px) { .sep, .gob { display: none; } .nombre { font-size: 13px; } }
-  @media (max-width: 480px) { .msp { font-size: 10.5px; } .marca img { height: 34px; } .nombre { display: none; } }
+  @media (max-width: 960px) { .sep, .gob { display: none; } .nombre { font-size: 15px; } }
+  @media (max-width: 480px) { .cab { padding: 10px 14px; } .msp { font-size: 13px; } .marca img { height: 44px; } .nombre { display: none; } }
   body.app .nombre { display: block; }
   @media (max-width: 480px) { body.app .msp { display: none; } }
   #entrada { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 16px;
