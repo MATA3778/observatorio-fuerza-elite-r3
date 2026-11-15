@@ -5,7 +5,7 @@ name: Actualizar datos del OIJ
 on:
   push:
     branches-ignore: [main]
-    paths: ['datos/entrada/**']
+    paths: ['datos/entrada/*.csv', 'datos/entrada/*.CSV', 'datos/entrada/*.xls', 'datos/entrada/*.XLS']
   workflow_dispatch:
     inputs:
       rama:
@@ -27,7 +27,7 @@ jobs:
         run: |
           shopt -s nullglob
           archivos=(datos/entrada/*.csv datos/entrada/*.CSV datos/entrada/*.xls datos/entrada/*.XLS)
-          if [ ${#archivos[@]} -eq 0 ]; then echo "No hay archivos en datos/entrada/"; exit 1; fi
+          if [ ${#archivos[@]} -eq 0 ]; then echo "No hay archivos en datos/entrada/; nada que convertir."; exit 0; fi
           python3 scripts/oij.py "${archivos[@]}"
           git rm -q --cached "${archivos[@]}" || true
           rm -f "${archivos[@]}"
