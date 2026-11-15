@@ -212,7 +212,7 @@
   });
 
   // Logos opcionales: si existen assets/logo1.png y assets/logo2.png se muestran arriba.
-  ['assets/logo1.png', 'assets/logo2.png'].forEach(function (src) {
+  ['assets/logo1.png'].forEach(function (src) {
     var img = new Image();
     img.onload = function () { $('logos').appendChild(img); $('logos').hidden = false; $('escudo').style.display = 'none'; };
     img.alt = ''; img.src = src;
