@@ -1,0 +1,45 @@
+name: Actualizar datos del OIJ
+
+# Se dispara al subir un CSV/.xls a datos/entrada/ en una rama (no en main).
+# Convierte con scripts/oij.py y abre un pull request hacia main con datos/hechos.json actualizado.
+on:
+  push:
+    branches-ignore: [main]
+    paths: ['datos/entrada/**']
+  workflow_dispatch:
+    inputs:
+      rama:
+        description: Rama con los archivos en datos/entrada/
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  convertir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.rama || github.ref_name }}
+      - name: Convertir los reportes
+        run: |
+          shopt -s nullglob
+          archivos=(datos/entrada/*.csv datos/entrada/*.CSV datos/entrada/*.xls datos/entrada/*.XLS)
+          if [ ${#archivos[@]} -eq 0 ]; then echo "No hay archivos en datos/entrada/"; exit 1; fi
+          python3 scripts/oij.py "${archivos[@]}"
+          git rm -q --cached "${archivos[@]}" || true
+          rm -f "${archivos[@]}"
+      - name: Commit y pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RAMA: ${{ github.event.inputs.rama || github.ref_name }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add datos/hechos.json
+          git commit -m "OIJ: actualizar datos de homicidios, heridos y propiedad" || { echo "Sin cambios"; exit 0; }
+          git push origin "HEAD:${RAMA}"
+          gh pr create --base main --head "${RAMA}" --title "OIJ: actualizar datos" \
+            --body "Datos del OIJ convertidos con scripts/oij.py (solo cantidades por fecha, franja, cantón, tipo, distrito y modalidad)." || true
