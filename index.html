@@ -6,6 +6,8 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <title>Observatorio Fuerza Élite R3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
 <style>
   :root {
     --fondo: #0b1d3a; --fondo2: #10294f; --tarjeta: #ffffff; --texto: #13233f; --suave: #5b6b85;
@@ -59,6 +61,18 @@
   .msg { min-height: 20px; margin-top: 12px; font-size: 14px; }
   .msg.error { color: var(--error); }
   .pie { margin-top: 18px; font-size: 12px; color: var(--suave); }
+  /* Estilo informe oficial: papel, filetes y serifa de documento */
+  :root { --tarjeta: #f3eee2; --texto: #1b1d22; --suave: #58554c; --azul: #17356b; --azul2: #0f2650; --borde: #8a8472; --error: #a3202a; }
+  body { font-family: "Libre Franklin", "Franklin Gothic Medium", "Segoe UI", system-ui, sans-serif; }
+  .tarjeta { border-radius: 0; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,.35); border-top: 4px double #1b1d22; padding: 28px 28px 24px; }
+  .logos { justify-content: flex-start; }
+  .escudo { margin-left: 0; }
+  h1 { font-family: "Libre Caslon Text", Georgia, serif; font-size: 24px; line-height: 1.2; letter-spacing: -.005em; padding-bottom: 10px; border-bottom: 1px solid #1b1d22; margin-bottom: 10px; }
+  label { text-transform: uppercase; letter-spacing: .06em; font-size: 11px; font-weight: 700; }
+  input[type=password], input[type=text] { border-radius: 0; background: #fbf8f1; border: 1px solid var(--borde); }
+  input:focus { border-color: var(--azul); box-shadow: 0 0 0 2px #f3eee2, 0 0 0 4px var(--azul); }
+  button.entrar { border-radius: 0; text-transform: uppercase; letter-spacing: .08em; font-size: 14px; }
+  .acciones button { border-radius: 0; }
   html:has(body.app), body.app { height: 100%; }
   #app { display: none; flex: 1; flex-direction: column; min-height: 0; }
   #app.on { display: flex; }
