@@ -10,7 +10,7 @@ hechos=open(f'{D}/hechos.json').read().replace('</','<\\/') if os.path.exists(f'
 head='''<title>Observatorio R3 Público</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
 <style>
   /* Tablero de una columna: encabezado, filtros, cifras, gráficas y tablas en tarjetas. */
   :root {
