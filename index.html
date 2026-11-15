@@ -7,6 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <title>Observatorio Fuerza Élite R3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
 <style>
   :root {
@@ -78,6 +79,34 @@
   #app.on { display: flex; }
   #marco { flex: 1; width: 100%; border: 0; background: #fff; }
   #cargando { flex: 1; display: none; align-items: center; justify-content: center; background: #f4f6fa; color: var(--suave); }
+  /* Sala de resultados */
+  :root { --tarjeta: #0e2347; --texto: #eaf0ff; --suave: #9fb2da; --azul: #2f7bff; --azul2: #4d8dff; --borde: #3a5288; --error: #ff7b8e; }
+  body { font-family: "Barlow", system-ui, sans-serif; color: var(--texto); }
+  .cab { background: #050f22; border-bottom: 2px solid #e3b64d; }
+  .msp, .nombre { font-family: "Barlow Condensed", sans-serif; letter-spacing: .08em; }
+  .nombre { font-weight: 700; text-transform: uppercase; font-size: 22px; }
+  #entrada { background: linear-gradient(rgba(5,15,34,.55), rgba(5,15,34,.85)), url(assets/fondo.jpg?v=3) center 40% / cover no-repeat; }
+  @media (min-width: 900px) { #entrada { background-size: auto, auto max(112%, 57vw); background-position: center, 100% 0%; } }
+  .tarjeta { background: #0e2347; border: 0; border-left: 4px solid #2f7bff; padding: 0 0 24px; max-width: 400px; position: relative; overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%); box-shadow: none; }
+  .tarjeta::before { content: ""; display: block; height: 6px; background: linear-gradient(90deg, #2f7bff 0 20%, #fff 20% 30%, #e0233f 30% 70%, #fff 70% 80%, #2f7bff 80%); }
+  .tarjeta > * { margin-left: 26px; margin-right: 26px; position: relative; z-index: 1; }
+  .tarjeta::after { content: ""; position: absolute; right: -56px; bottom: -64px; width: 200px; height: 200px; background: url(assets/logo1.png) center/contain no-repeat; opacity: .12; pointer-events: none; }
+  .escudo { display: none; }
+  .kick { display: block; font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #e3b64d; margin-top: 24px; }
+  .logo2 { height: 84px; display: block; margin-top: 22px; position: relative; }
+  h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 46px; line-height: .94; text-transform: uppercase; letter-spacing: .01em; border: 0; padding: 0; margin-top: 10px; margin-bottom: 8px; color: #fff; }
+  h1 em { font-style: normal; color: #4d8dff; }
+  .sub { color: #9fb2da; margin-bottom: 22px; }
+  label { color: #9fb2da; text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 600; }
+  input[type=password], input[type=text] { background: #0a1c3c; color: #fff; border: 1px solid #3a5288; border-radius: 0; }
+  input:focus { border-color: #e3b64d; box-shadow: none; }
+  .ver { color: #e3b64d; }
+  button.entrar { background: #e3b64d; color: #07152e; border-radius: 0; font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 19px; letter-spacing: .14em; text-transform: uppercase; }
+  button.entrar:hover { background: #f0c55f; }
+  .pie { color: #9fb2da; }
+  .logos { display: none !important; }
+  button.entrar { width: calc(100% - 52px); }
 </style>
 </head>
 <body>
@@ -105,7 +134,7 @@
       <rect x="24" y="29" width="16" height="13" rx="2" fill="#fff"/>
       <path d="M27 29v-4a5 5 0 0 1 10 0v4" fill="none" stroke="#fff" stroke-width="3"/>
     </svg>
-    <h1>Observatorio Fuerza Élite R3</h1>
+    <span class="kick">Observatorio · Fuerza Pública · Cartago</span><h1>Fuerza <em>Élite</em> R3</h1>
     <p class="sub">Región 3 · Cartago · Acceso restringido</p>
     <label for="clave">Contraseña</label>
     <div class="campo">
