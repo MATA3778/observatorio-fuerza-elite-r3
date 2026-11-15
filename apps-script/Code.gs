@@ -43,7 +43,8 @@ function doGet(e) {
     if (p.formato === 'html') return ContentService.createTextOutput('Acceso restringido');
     return HtmlService.createHtmlOutput('<div style="font-family:Arial,sans-serif;text-align:center;margin-top:80px">' +
       '<h2>Acceso restringido</h2><p>Este tablero solo se abre desde el sitio del Observatorio con contraseña.</p></div>')
-      .setTitle('Acceso restringido');
+      .setTitle('Acceso restringido')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1');
   }
   var json = leerCache_();
   if (!json) {
