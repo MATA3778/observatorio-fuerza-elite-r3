@@ -295,6 +295,15 @@
     .ob-card { padding: 12px 0 0; }
     .ob-nav.ob-main button { padding-inline: 10px; }
   }
+  /* Teléfono: todo un poco más compacto; los campos a 16px para que iOS no haga zoom al tocarlos. */
+  @media (max-width: 640px) {
+    html { font-size: 14px; }
+    .ob-title { font-size: 1.35rem; }
+    .ob-kpi-value { font-size: 1.4rem; }
+    .ob-card h2 { font-size: 1.15rem; }
+    .ob-date, .dash-select, .ob-filters .dash-select { font-size: 16px; }
+    #dash-root { padding-block: 12px 28px; }
+  }
   @media print {
     :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
       --color-bg: #ffffff; --color-panel: #ffffff; --color-fg: #17202b; --color-fg-muted: #4a5565; --color-border-line: #c9cfd8; --color-ok: #1d7a46; --accent: #1b3350; --gold: #c9a227;
