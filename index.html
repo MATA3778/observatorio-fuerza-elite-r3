@@ -162,28 +162,93 @@
   function deB64(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
   function aviso(t, error) { $('msg').textContent = t || ''; $('msg').className = 'msg' + (error ? ' error' : ''); }
 
+  function aB64(u) { var t = ''; for (var i = 0; i < u.length; i++) t += String.fromCharCode(u[i]); return btoa(t); }
+  function sinCache(u) { return fetch(u, { cache: 'no-store' }); }
+
+  // Con la contraseña se saca la llave del sitio y con ella se abre la configuración (dirección y llave de los datos).
   async function descifrar(clave) {
-    var r = await fetch('config.enc.json', { cache: 'no-store' });
+    var r = await sinCache('config.enc.json');
     if (!r.ok) throw new Error('sin-config');
     var c = await r.json();
-    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(clave), 'PBKDF2', false, ['deriveKey']);
-    var k = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: deB64(c.sal), iterations: c.it, hash: 'SHA-256' },
-      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(clave), 'PBKDF2', false, ['deriveBits']);
+    var bits = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: deB64(c.sal), iterations: c.it, hash: 'SHA-256' }, base, 256));
     try {
+      var k = await crypto.subtle.importKey('raw', bits, 'AES-GCM', false, ['decrypt']);
       var p = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: deB64(c.iv) }, k, deB64(c.ct));
-      return JSON.parse(new TextDecoder().decode(p));
+      var o = JSON.parse(new TextDecoder().decode(p));
+      o.k = aB64(bits);
+      return o;
+    } catch (e) { throw new Error('clave'); }
+  }
+
+  // El tablero viaja cifrado dentro del sitio (tablero.enc.json) y se abre con la misma llave.
+  // Devuelve null si esta publicación todavía no lo trae; lanza 'clave' si la llave ya no sirve.
+  var plantilla = null;
+  async function leerTablero() {
+    var r;
+    try { r = await sinCache('tablero.enc.json'); } catch (e) { throw new Error('red'); }
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error('red');
+    var c = await r.json();
+    try {
+      var k = await crypto.subtle.importKey('raw', deB64(cfg.k), 'AES-GCM', false, ['decrypt']);
+      var p = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: deB64(c.iv) }, k, deB64(c.ct));
+      return new TextDecoder().decode(p);
     } catch (e) { throw new Error('clave'); }
   }
 
   // Homicidios y heridos del OIJ (datos abiertos): se agregan al tablero antes de mostrarlo.
   async function leerHechos() {
-    try { var r = await fetch('datos/hechos.json', { cache: 'no-store' }); if (r.ok) return await r.text(); } catch (e) {}
+    try { var r = await sinCache('datos/hechos.json'); if (r.ok) return await r.text(); } catch (e) {}
     return '[]';
   }
+  function seguro(json) { return json.replace(/<\//g, '<\\/'); }
   function conHechos(html, json) {
-    var tag = '<script type="application/json" id="data-hechos">' + json.replace(/<\//g, '<\\/') + '<\/script>';
+    var tag = '<script type="application/json" id="data-hechos">' + seguro(json) + '<\/script>';
     var i = html.indexOf('<head>');
     return i >= 0 ? html.slice(0, i + 6) + tag + html.slice(i + 6) : tag + html;
+  }
+  function bloque(html, id) {
+    var a = '<script type="application/json" id="data-' + id + '">';
+    var i = html.indexOf(a); if (i < 0) return null;
+    var j = html.indexOf('<\/script>', i); if (j < 0) return null;
+    return html.slice(i + a.length, j);
+  }
+
+  // Los datos salen en vivo de la Google Sheet por Apps Script.
+  // Camino nuevo: Apps Script entrega solo los datos (formato=json).
+  // Camino anterior: si Apps Script aún tiene el código viejo, entrega la página completa (formato=html);
+  // de ahí se toman solo los datos y se muestran con el tablero del sitio.
+  var MODO = 'obs_modo';
+  async function pedir(formato) {
+    var r = await fetch(cfg.url + '?formato=' + formato + '&llave=' + encodeURIComponent(cfg.llave), { cache: 'no-store', credentials: 'omit' });
+    var t = await r.text();
+    if (t.indexOf('Acceso restringido') >= 0 && t.length < 2000) throw new Error('llave');
+    if (!r.ok) throw new Error('red');
+    return t;
+  }
+  async function leerDatos() {
+    var modo = null;
+    try { modo = sessionStorage.getItem(MODO); } catch (e) {}
+    if (modo !== 'html') {
+      try {
+        var d = JSON.parse(await pedir('json'));
+        if (d && Array.isArray(d.cortes) && Array.isArray(d.general)) {
+          return { cortes: JSON.stringify(d.cortes), general: JSON.stringify(d.general), html: null };
+        }
+      } catch (e) { if (e.message === 'llave') throw e; }
+    }
+    var html = await pedir('html');
+    var c = bloque(html, 'cortes'), g = bloque(html, 'general');
+    if (c === null || g === null) throw new Error('red');
+    try { JSON.parse(c); JSON.parse(g); } catch (e) { throw new Error('red'); }
+    try { sessionStorage.setItem(MODO, 'html'); } catch (e) {}
+    return { cortes: c, general: g, html: html };
+  }
+
+  function cerrarSesion() {
+    try { sessionStorage.removeItem(CLAVE_SESION); sessionStorage.removeItem(MODO); } catch (e) {}
+    cfg = null; plantilla = null; $('marco').srcdoc = ''; location.reload();
   }
 
   async function cargarTablero() {
@@ -191,13 +256,21 @@
     $('cargando').style.display = 'flex';
     $('cargando').textContent = 'Cargando datos…';
     try {
-      var r = await fetch(cfg.url + '?formato=html&llave=' + encodeURIComponent(cfg.llave), { cache: 'no-store', credentials: 'omit' });
-      var html = await r.text();
-      if (!r.ok || html.indexOf('id="data-cortes"') < 0) throw new Error(html.indexOf('Acceso restringido') >= 0 ? 'llave' : 'red');
-      $('marco').srcdoc = conHechos(html, await leerHechos());
+      // El tablero se vuelve a leer en cada carga: así "Actualizar" también trae la última versión publicada.
+      var partes = await Promise.all([leerTablero(), leerDatos(), leerHechos()]);
+      if (partes[0]) plantilla = partes[0];
+      var d = partes[1], html;
+      if (plantilla) {
+        html = plantilla.replace('<?!= cortes ?>', function () { return seguro(d.cortes); })
+                        .replace('<?!= general ?>', function () { return seguro(d.general); });
+      } else if (d.html) {
+        html = d.html;              // publicación sin tablero cifrado: se muestra el de Apps Script
+      } else { throw new Error('red'); }
+      $('marco').srcdoc = conHechos(html, partes[2]);
       $('marco').hidden = false;
       $('cargando').style.display = 'none';
     } catch (e) {
+      if (e.message === 'clave') { cerrarSesion(); return; }   // cambió la contraseña del sitio: se pide de nuevo
       $('cargando').textContent = e.message === 'llave'
         ? 'El tablero no aceptó la llave de acceso. Hay que revisar la configuración.'
         : 'No se pudo cargar el tablero. Revise la conexión y toque "Actualizar".';
@@ -235,10 +308,7 @@
     i.type = oculto ? 'text' : 'password'; this.textContent = oculto ? 'Ocultar' : 'Ver'; i.focus();
   });
   $('recargar').addEventListener('click', cargarTablero);
-  $('salir').addEventListener('click', function () {
-    try { sessionStorage.removeItem(CLAVE_SESION); } catch (e) {}
-    cfg = null; $('marco').srcdoc = ''; location.reload();
-  });
+  $('salir').addEventListener('click', cerrarSesion);
 
   // Logos opcionales: si existen assets/logo1.png y assets/logo2.png se muestran arriba.
   ['assets/logo1.png'].forEach(function (src) {
@@ -248,7 +318,7 @@
   });
 
   try { cfg = JSON.parse(sessionStorage.getItem(CLAVE_SESION) || 'null'); } catch (e) { cfg = null; }
-  if (cfg && cfg.url && cfg.llave) abrir();
+  if (cfg && cfg.url && cfg.llave && cfg.k) abrir(); else cfg = null;
 })();
 </script>
 </body>

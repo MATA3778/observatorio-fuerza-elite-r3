@@ -51,6 +51,9 @@ function doGet(e) {
     json = JSON.stringify(datos);
     guardarCache_(json);
   }
+  // formato=json: solo los datos. El sitio con contraseña ya trae el tablero (cifrado) y solo pide esto,
+  // así el tablero se actualiza desde GitHub sin volver a pegar Index.html aquí.
+  if (p.formato === 'json') return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
   var datos2 = JSON.parse(json);
   var t = HtmlService.createTemplateFromFile('Index');
   t.cortes = JSON.stringify(datos2.cortes).replace(/<\//g, '<\\/');
