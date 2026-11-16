@@ -67,6 +67,7 @@ Aquí no van datos, nombres, cédulas ni la contraseña. Solo el código de la p
 ## Anclajes y zonas (DR3)
 
 La vista "Anclajes y zonas" dibuja las capas del compilado QGIS de la Dirección Regional 3 (anclajes, factores de riesgo,
-circuitos, cascos y elipses) sobre el mapa de cantones. Los datos van dentro de `apps-script/Index.html` (constante `ANC`)
+circuitos, cascos y elipses) con los mismos colores del proyecto QGIS, sobre el mapa de calles de OpenStreetMap (Leaflet).
+Si OpenStreetMap rechaza el fondo, el mapa cambia solo al fondo de CARTO. Los datos van dentro de `apps-script/Index.html` (constante `ANC`)
 y se arman con `tablero/build_anclajes.py <carpeta_shp> <cantones.geojson> <salida.json>`. Los shapefiles no se guardan
 en el repositorio; del archivo original no se copian las rutas del servidor ni el nombre de quien registró cada factor.
