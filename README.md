@@ -4,9 +4,14 @@ Sitio privado del Observatorio. Se abre solo con contraseña.
 
 - La página (`index.html`) no trae datos. Al poner la contraseña, descifra en el navegador
   la dirección del tablero y su llave (`config.enc.json`, cifrado con AES-256 y PBKDF2 de 600 000 vueltas).
-- Con esa llave pide el tablero a Apps Script, que lee la Google Sheet en vivo.
+- El tablero viaja cifrado dentro del sitio (`tablero.enc.json`, misma contraseña). Se arma en cada publicación
+  a partir de `apps-script/Index.html`, así que **un cambio del tablero queda publicado al fusionar en `main`,
+  sin pegar nada en Apps Script**.
+- Con la llave, el sitio le pide a Apps Script solo los datos (`formato=json`), que salen en vivo de la Google Sheet.
   Sin la llave, Apps Script responde "Acceso restringido".
-- `config.enc.json` lo arma GitHub Actions en cada publicación; no está en el repositorio.
+- Si Apps Script todavía tiene el `Code.gs` anterior (sin `formato=json`), el sitio pide la página completa,
+  toma de ahí solo los datos y los muestra con el tablero del sitio. Funciona igual, solo descarga más.
+- `config.enc.json` y `tablero.enc.json` los arma GitHub Actions en cada publicación; no están en el repositorio.
 - `robots.txt` y la etiqueta `noindex` le piden a los buscadores no indexar el sitio.
 
 ## Secretos (Settings → Secrets and variables → Actions)
@@ -48,7 +53,8 @@ Aquí no van datos, nombres, cédulas ni la contraseña. Solo el código de la p
 ## Tablero (código fuente)
 
 - `tablero/tablero_index.html` es el tablero. Sus datos de cortes y General no van aquí: Apps Script los lee en vivo de la Google Sheet.
-- `apps-script/Code.gs` e `apps-script/Index.html` son lo que se pega en Apps Script (Index.html se arma con `tablero/build_public.py` y `tablero/build_appscript.py`). Tras pegar el código: Implementar → Gestionar implementaciones → Nueva versión (misma URL).
+- `apps-script/Index.html` es el tablero que se publica (se arma con `tablero/build_public.py` y `tablero/build_appscript.py`). Ya no hace falta pegarlo en Apps Script: el sitio lo publica cifrado.
+- `apps-script/Code.gs` es lo único que vive en Apps Script. Solo se pega si cambia la forma de leer la hoja (poco frecuente). Tras pegarlo: Implementar → Gestionar implementaciones → Nueva versión (misma URL).
 - Vista **Resumen y control**: texto del corte para WhatsApp, cortes sin datos de hoy, ayer y anteayer, y cuadre de la General contra `base_al_7_nov` más las hojas diarias desde el 8 nov. La base sale de `registro_general.json` de Cortes-Operativos-R3: `python3 tablero/actualizar_base.py registro_general.json`.
 - Caché: Apps Script guarda los datos 15 minutos y un activador los precalienta cada 5 (`instalarPrecalentado()`, se corre una sola vez).
 

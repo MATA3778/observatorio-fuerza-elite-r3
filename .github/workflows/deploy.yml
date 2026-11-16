@@ -31,12 +31,12 @@ jobs:
           cp index.html robots.txt _site/
           cp -r assets datos _site/
           touch _site/.nojekyll
-      - name: Cifrar dirección y llave
+      - name: Cifrar dirección, llave y tablero
         env:
           OBS_CLAVE: ${{ secrets.OBS_CLAVE }}
           OBS_URL: ${{ secrets.OBS_URL }}
           OBS_LLAVE: ${{ secrets.OBS_LLAVE }}
-        run: node scripts/cifrar.mjs _site/config.enc.json
+        run: node scripts/cifrar.mjs _site/config.enc.json apps-script/Index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
