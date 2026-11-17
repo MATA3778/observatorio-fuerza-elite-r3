@@ -153,7 +153,6 @@
   .ob-anc-ficha b { display: block; }
   .ob-anc-ficha dl { margin: 6px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; font-size: var(--cds-font-size-caption); }
   .ob-anc-ficha dt { color: var(--color-fg-muted); } .ob-anc-ficha dd { margin: 0; }
-  .ob-anc-lista { columns: 18rem; margin: 0 0 var(--cds-pad-md); padding-left: 2.2rem; font-size: var(--cds-font-size-caption); }
   @media print { .ob-anc-barra select { display: none; } .ob-anc-lienzo { height: 640px; } }
   .ob-resumen-oij { display: grid; gap: var(--cds-gap-sm); }
   .ob-head-row { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-md); align-items: flex-start; justify-content: space-between; }
@@ -428,7 +427,6 @@
       <button type="button" data-ir="mapad" data-sv="hom">Mapa por distrito</button>
       <button type="button" data-ir="anclajes" data-sv="anc">Mapa</button>
       <button type="button" data-ir="anc-factores" data-sv="anc">Factores de riesgo</button>
-      <button type="button" data-ir="anc-lista" data-sv="anc">Lista de anclajes</button>
     </nav>
   </div>
 
@@ -671,10 +669,6 @@
     <details class="ob-det" id="anc-factores"><summary>Factores de riesgo</summary>
     <p class="ob-note">Según el cantón elegido en el mapa. Descripción y acción sugerida tal como vienen en la capa.</p>
     <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Cantón</th><th>Distrito</th><th>Factor de riesgo</th><th>Acción sugerida</th></tr></thead><tbody data-draw="anc-factores" data-source="cortes"></tbody></table></div>
-    </details>
-    <details class="ob-det" id="anc-lista"><summary>Lista de anclajes</summary>
-    <p class="ob-note">Nombre del sitio de cada anclaje, tal como viene en la capa.</p>
-    <ol class="ob-anc-lista" data-draw="anc-lista" data-source="cortes"></ol>
     </details>
   </section>
 
@@ -1773,10 +1767,6 @@
     const F = ANC.factores.map((r) => [r[9] || ancCanton(r[5]) || r[5] || 'Sin cantón', r[6], r[2], r[4]]).filter((r) => !c || r[0] === c).sort((a, b) => a[0].localeCompare(b[0], 'es') || a[1].localeCompare(b[1], 'es'));
     F.forEach((r) => { const tr = document.createElement('tr'); r.forEach((t, i) => { const td = document.createElement('td'); td.textContent = i > 1 ? ancFrase(t) : t; if (i > 1) td.style.cssText = 'white-space:normal;min-width:14rem;text-align:left'; tr.append(td); }); tb.append(tr); });
     if (!F.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 4; td.textContent = 'Sin factores de riesgo en este cantón.'; tr.append(td); tb.append(tr); }
-  });
-  dash.draw('anc-lista', (ol) => {
-    if (ol.children.length) return;
-    ANC.anclajes.map((r) => ancFrase(r[2]) || 'Sin nombre en la capa').sort((a, b) => a.localeCompare(b, 'es')).forEach((t) => { const li = document.createElement('li'); li.textContent = t; ol.append(li); });
   });
   // Vistas (pestañas), menú de secciones, enlace que recuerda la vista y los filtros.
   const OBV = (() => {
