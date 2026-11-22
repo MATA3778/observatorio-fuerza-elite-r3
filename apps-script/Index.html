@@ -3,6 +3,7 @@
 <head>
 <base target="_top">
 <meta charset="utf-8">
+<title>Observatorio Fuerza Élite R3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
 <style>
@@ -510,7 +511,7 @@
     <p class="ob-note ob-psico" hidden>Decomiso y hallazgo van por separado. El Observatorio nacional los suma en un solo campo.</p>
     <div class="ob-tablewrap" data-source="cortes">
       <table class="ob-table">
-        <thead><tr><th>Categoría</th><th>Total</th><th>13:00</th><th>16:00</th><th>18:00</th><th>20:00</th><th>22:00</th><th>00:00</th></tr></thead>
+        <thead><tr><th scope="col">Categoría</th><th scope="col">Total</th><th scope="col">13:00</th><th scope="col">16:00</th><th scope="col">18:00</th><th scope="col">20:00</th><th scope="col">22:00</th><th scope="col">00:00</th></tr></thead>
         <tbody data-draw="tabla"></tbody>
       </table>
     </div>
@@ -522,7 +523,7 @@
     <p class="ob-note">Lo que dice la hoja General para la pestaña elegida: desde el 22 de agosto, igualada al Observatorio nacional hasta el 7 de noviembre y con los cortes nuevos sumados.</p>
     <div class="ob-tablewrap">
       <table class="ob-table" data-source="general" data-row-key="categoria">
-        <thead><tr><th data-field="categoria">Categoría</th><th data-field="total">Total general</th></tr></thead>
+        <thead><tr><th scope="col" data-field="categoria">Categoría</th><th scope="col" data-field="total">Total general</th></tr></thead>
         <tbody data-draw="general"></tbody>
       </table>
     </div>
@@ -556,15 +557,15 @@
     <details class="ob-det"><summary>Cómo ocurren: móvil y arma</summary>
     <p class="ob-note">Casos de 2026 y, entre paréntesis, el cambio contra 2025. Franja horaria más frecuente en los dos: 18:00 a 23:59.</p>
     <div class="ob-grid">
-      <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Móvil</th><th>Homicidios</th><th>Heridos</th></tr></thead><tbody data-draw="como" data-tabla="movil" data-source="cortes"></tbody></table></div>
-      <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Arma</th><th>Homicidios</th><th>Heridos</th></tr></thead><tbody data-draw="como" data-tabla="arma" data-source="cortes"></tbody></table></div>
+      <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Móvil</th><th scope="col">Homicidios</th><th scope="col">Heridos</th></tr></thead><tbody data-draw="como" data-tabla="movil" data-source="cortes"></tbody></table></div>
+      <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Arma</th><th scope="col">Homicidios</th><th scope="col">Heridos</th></tr></thead><tbody data-draw="como" data-tabla="arma" data-source="cortes"></tbody></table></div>
     </div>
     </details>
     <details class="ob-det"><summary>Distritos con más casos y dispositivos</summary>
     <p class="ob-note">Distritos con más homicidios o heridos en 2026 y si las órdenes 0175 y 0185 les asignan un dispositivo propio.</p>
     <div class="ob-tablewrap">
       <table class="ob-table ctx">
-        <thead><tr><th>Distrito</th><th>Homicidios</th><th>Heridos</th><th style="text-align:left">Dispositivo</th></tr></thead>
+        <thead><tr><th scope="col">Distrito</th><th scope="col">Homicidios</th><th scope="col">Heridos</th><th scope="col" style="text-align:left">Dispositivo</th></tr></thead>
         <tbody data-draw="distritos" data-source="cortes"></tbody>
       </table>
     </div>
@@ -573,7 +574,7 @@
     <p class="ob-note">Fuente: Dirección de Inteligencia y Análisis Criminal. Casos de 2026 y, entre paréntesis, el cambio contra 2025. En negrita, las que subieron.</p>
     <div class="ob-tablewrap">
       <table class="ob-table ctx">
-        <thead><tr><th>Delegación</th><th>Homicidios</th><th>Heridos</th><th>Delitos contra la propiedad</th></tr></thead>
+        <thead><tr><th scope="col">Delegación</th><th scope="col">Homicidios</th><th scope="col">Heridos</th><th scope="col">Delitos contra la propiedad</th></tr></thead>
         <tbody data-draw="diac" data-source="cortes"></tbody>
       </table>
     </div>
@@ -610,7 +611,7 @@
     <p class="ob-note">Casos en los días de cada orden en 2026, contra los mismos días de 2025 y contra el mismo número de días justo antes de que empezara el dispositivo (22 de agosto). La 0169 y la 0175 se cruzan del 1 al 10 de octubre. La 0185 va hasta el último dato.</p>
     <div class="ob-tablewrap">
       <table class="ob-table ctx">
-        <thead><tr><th>Periodo</th><th>Días</th><th>Homicidios 2026</th><th>Mismos días 2025</th><th>Lesiones 2026</th><th>Mismos días 2025</th><th>Agresiones 2026</th><th>Mismos días 2025</th></tr></thead>
+        <thead><tr><th scope="col">Periodo</th><th scope="col">Días</th><th scope="col">Homicidios 2026</th><th scope="col">Mismos días 2025</th><th scope="col">Lesiones 2026</th><th scope="col">Mismos días 2025</th><th scope="col">Agresiones 2026</th><th scope="col">Mismos días 2025</th></tr></thead>
         <tbody data-draw="oij-ordenes" data-source="hechos"></tbody>
       </table>
     </div>
@@ -619,14 +620,14 @@
     <p class="ob-note">Homicidios del OIJ desde el 22 de agosto y, entre paréntesis, el cambio contra los mismos días de 2025. Los heridos por cantón son de la DIAC (enero al corte, contra el mismo periodo de 2025). Lesiones y agresiones del OIJ se muestran solo para toda la zona.</p>
     <div class="ob-tablewrap">
       <table class="ob-table ctx">
-        <thead><tr><th>Cantón</th><th>Homicidios (OIJ)</th><th>Homicidios de 18:00 a 02:59</th><th>Heridos (DIAC)</th></tr></thead>
+        <thead><tr><th scope="col">Cantón</th><th scope="col">Homicidios (OIJ)</th><th scope="col">Homicidios de 18:00 a 02:59</th><th scope="col">Heridos (DIAC)</th></tr></thead>
         <tbody data-draw="oij-canton" data-source="hechos"></tbody>
       </table>
     </div>
     </details>
     <details class="ob-det"><summary>Homicidios por distrito</summary>
     <p class="ob-note">Homicidios del OIJ en 2026 (enero al corte) y, entre paréntesis, el cambio contra el mismo periodo de 2025. Solo distritos con casos en alguno de los dos años.</p>
-    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Distrito</th><th>Cantón</th><th>Homicidios 2026</th><th>Desde el 22 ago</th></tr></thead><tbody data-draw="oij-distrito" data-source="hechos"></tbody></table></div>
+    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Distrito</th><th scope="col">Cantón</th><th scope="col">Homicidios 2026</th><th scope="col">Desde el 22 ago</th></tr></thead><tbody data-draw="oij-distrito" data-source="hechos"></tbody></table></div>
     </details>
     <h2 id="comparar">Comparar dos periodos</h2>
     <p class="ob-note">Elija dos periodos y vea cuántos casos del OIJ hubo en cada uno. En rojo, más casos que en el otro periodo; en verde, menos. Si los periodos tienen distinta cantidad de días, mire también las columnas "por día".</p>
@@ -651,14 +652,14 @@
     </div>
     <details class="ob-det"><summary>Propiedad por modalidad</summary>
     <p class="ob-note">Las 15 modalidades con más casos desde el 22 de agosto.</p>
-    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Delito</th><th>Modalidad</th><th>2026</th><th>Mismos días 2025</th></tr></thead><tbody data-draw="prop-modalidad" data-source="hechos"></tbody></table></div>
+    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Delito</th><th scope="col">Modalidad</th><th scope="col">2026</th><th scope="col">Mismos días 2025</th></tr></thead><tbody data-draw="prop-modalidad" data-source="hechos"></tbody></table></div>
     </details>
     <details class="ob-det"><summary>Propiedad por cantón</summary>
-    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Cantón</th><th>Hurto</th><th>Robo</th><th>Asalto</th><th>Robo de vehículo</th><th>Tacha de vehículo</th><th>Total</th></tr></thead><tbody data-draw="prop-canton" data-source="hechos"></tbody></table></div>
+    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Cantón</th><th scope="col">Hurto</th><th scope="col">Robo</th><th scope="col">Asalto</th><th scope="col">Robo de vehículo</th><th scope="col">Tacha de vehículo</th><th scope="col">Total</th></tr></thead><tbody data-draw="prop-canton" data-source="hechos"></tbody></table></div>
     </details>
     <details class="ob-det"><summary>Propiedad por distrito</summary>
     <p class="ob-note" data-draw="prop-distrito-nota" data-source="hechos"></p>
-    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Distrito</th><th>Cantón</th><th>Homicidios en 2026</th><th>Propiedad desde el 22 ago</th><th>Tachas desde el 22 ago</th></tr></thead><tbody data-draw="prop-distrito" data-source="hechos"></tbody></table></div>
+    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Distrito</th><th scope="col">Cantón</th><th scope="col">Homicidios en 2026</th><th scope="col">Propiedad desde el 22 ago</th><th scope="col">Tachas desde el 22 ago</th></tr></thead><tbody data-draw="prop-distrito" data-source="hechos"></tbody></table></div>
     </details>
   </section>
 
@@ -668,7 +669,7 @@
     <div class="ob-anc" data-draw="anc-mapa" data-source="cortes"></div>
     <details class="ob-det" id="anc-factores"><summary>Factores de riesgo</summary>
     <p class="ob-note">Según el cantón elegido en el mapa. Descripción y acción sugerida tal como vienen en la capa.</p>
-    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th>Cantón</th><th>Distrito</th><th>Factor de riesgo</th><th>Acción sugerida</th></tr></thead><tbody data-draw="anc-factores" data-source="cortes"></tbody></table></div>
+    <div class="ob-tablewrap"><table class="ob-table ctx"><thead><tr><th scope="col">Cantón</th><th scope="col">Distrito</th><th scope="col">Factor de riesgo</th><th scope="col">Acción sugerida</th></tr></thead><tbody data-draw="anc-factores" data-source="cortes"></tbody></table></div>
     </details>
   </section>
 
@@ -687,7 +688,7 @@
   <section class="ob-card" id="faltantes" data-vista="ctl">
     <h2>Cortes faltantes</h2>
     <p class="ob-note">Hoy, ayer y anteayer (hora de Costa Rica). "Sin datos" significa que ese corte no tiene ninguna cantidad en la hoja; también pasa si de verdad no hubo actividad.</p>
-    <div class="ob-tablewrap"><table class="ob-table"><thead><tr><th>Día</th><th>13:00</th><th>16:00</th><th>18:00</th><th>20:00</th><th>22:00</th><th>00:00</th></tr></thead>
+    <div class="ob-tablewrap"><table class="ob-table"><thead><tr><th scope="col">Día</th><th scope="col">13:00</th><th scope="col">16:00</th><th scope="col">18:00</th><th scope="col">20:00</th><th scope="col">22:00</th><th scope="col">00:00</th></tr></thead>
       <tbody id="ctl-falt"></tbody></table></div>
   </section>
 
@@ -695,7 +696,7 @@
     <h2>Cuadre de la General</h2>
     <p class="ob-note">La General debe ser igual a la base al 7 de noviembre más la suma de las hojas diarias desde el 8 de noviembre. Aquí solo salen las filas que no cuadran. Las 5 filas que se suman a mano en la General no se revisan.</p>
     <p class="ob-take" id="ctl-cuadre-res"></p>
-    <div class="ob-tablewrap"><table class="ob-table"><thead><tr><th>Categoría</th><th>General</th><th>Debería ser</th><th>Diferencia</th></tr></thead>
+    <div class="ob-tablewrap"><table class="ob-table"><thead><tr><th scope="col">Categoría</th><th scope="col">General</th><th scope="col">Debería ser</th><th scope="col">Diferencia</th></tr></thead>
       <tbody id="ctl-cuadre"></tbody></table></div>
   </section>
 
@@ -704,7 +705,7 @@
     <p class="ob-note">Cada orden de operación es el documento que fija el periodo y las acciones del dispositivo (Sinergia y Cerco). Aquí, nuestros resultados en cada orden: promedio por día con todo lo registrado, sin los filtros de arriba. La 0169 y la 0175 se cruzan del 1 al 10 de octubre, así que esos días cuentan en las dos.</p>
     <div class="ob-tablewrap">
       <table class="ob-table ctx">
-        <thead><tr><th>Orden</th><th>Días</th><th>Personas por día</th><th>Controles por día</th><th>Aprehensiones por día</th><th>Armas de fuego</th></tr></thead>
+        <thead><tr><th scope="col">Orden</th><th scope="col">Días</th><th scope="col">Personas por día</th><th scope="col">Controles por día</th><th scope="col">Aprehensiones por día</th><th scope="col">Armas de fuego</th></tr></thead>
         <tbody data-draw="ordenes" data-source="cortes"></tbody>
       </table>
     </div>
